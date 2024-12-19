@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "https://github.com/adamlahbib/unkloaker/api/proto;proto";
+
+service Unkloaker {
+    rpc Deploy (UnkloakerDeployRequest) returns (UnkloakerDeployResponse);
+    rpc Undeploy (UnkloakerUndeployRequest) returns (UnkloakerUndeployResponse);
+}
+
+service Kloner {
+    rpc Clone (KlonerCloneRequest) returns (KlonerCloneResponse);
+    rpc Cleanup (KlonerCleanupRequest) returns (KlonerCleanupResponse);
+}
+
+service Konstruktor {
+    rpc Build (KonstruktorBuildRequest) returns (KonstruktorBuildResponse);
+}
+
+message KlonerCloneRequest {
+    string owner = 1;
+    string reponame = 2;
+    string url = 3;
+    string dockerfilecontext = 4;
+}
+
+message KlonerCloneResponse {
+    string id = 1;
+    string path = 2;
+    string dockerfilecontext = 3;
+    bool success = 4;
+}
+
+message KlonerCleanupRequest {
+    string id = 1;
+    string path = 2;
+}
+
+message KlonerCleanupResponse {
+    bool success = 1;
+}
+
+message KonstruktorBuildRequest {
+    string name = 1;
+    string tag = 2;
+    string repopath = 3;
+    string dockerfilecontext = 4;
+}
+
+message KonstruktorBuildResponse {
+    string imagenamewithtag = 1;
+    bool success = 2;
+}
+
+message UnkloakerDeployRequest {
+    string imagenamewithtag = 1;
+    int32 port = 2;
+    int32 replicas = 3;
+    map<string, string> envvars = 4;
+}
+
+message UnkloakerDeployResponse {
+    string id = 1;
+    bool success = 2;
+}
+
+message UnkloakerUndeployRequest {
+    string id = 1;
+}
+
+message UnkloakerUndeployResponse {
+    bool success = 1;
+}
